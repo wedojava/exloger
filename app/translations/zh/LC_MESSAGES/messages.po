@@ -1,0 +1,149 @@
+# Chinese translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-03 00:06+0800\n"
+"PO-Revision-Date: 2018-12-03 00:05+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: app/__init__.py:21
+msgid "Please log in to access this page."
+msgstr "请登录以访问此面."
+
+#: app/forms.py:9 app/forms.py:17 app/forms.py:36
+msgid "Username"
+msgstr "用户名"
+
+#: app/forms.py:10 app/forms.py:19
+msgid "Password"
+msgstr "密码"
+
+#: app/forms.py:11
+msgid "Remember Me"
+msgstr "记住我的登录"
+
+#: app/forms.py:12 app/routes.py:55 app/templates/login.html:5
+msgid "Sign In"
+msgstr "登录"
+
+#: app/forms.py:18
+msgid "Email"
+msgstr "邮箱"
+
+#: app/forms.py:21
+msgid "Repeat Password"
+msgstr "再次输入密码"
+
+#: app/forms.py:22 app/routes.py:76 app/templates/register.html:5
+msgid "Register"
+msgstr "注册"
+
+#: app/forms.py:27 app/forms.py:48
+msgid "Please use a different username."
+msgstr "用户名已存在,换一个试试?"
+
+#: app/forms.py:32
+msgid "Please use a different email address."
+msgstr "邮箱已存在,换一个试试?"
+
+#: app/forms.py:37
+msgid "About me"
+msgstr "关于我"
+
+#: app/forms.py:38 app/forms.py:54
+msgid "Submit"
+msgstr "提交"
+
+#: app/forms.py:52
+msgid "Say something"
+msgstr "说点什么?"
+
+#: app/routes.py:34 app/templates/base.html:21
+msgid "Home"
+msgstr "首页"
+
+#: app/routes.py:46
+msgid "Invalid username or password"
+msgstr "用户名或密码无效"
+
+#: app/routes.py:100
+msgid "Your changes have been saved."
+msgstr "你的更改已经保存."
+
+#: app/routes.py:105 app/templates/edit_profile.html:5
+msgid "Edit Profile"
+msgstr "编辑个人设置"
+
+#: app/templates/base.html:4
+msgid "Welcome to ExLoger"
+msgstr "欢迎使用 ExLoger"
+
+#: app/templates/base.html:25
+msgid "Login"
+msgstr "登录"
+
+#: app/templates/base.html:27
+msgid "Profile"
+msgstr "设置"
+
+#: app/templates/base.html:28
+msgid "Logout"
+msgstr "登出"
+
+#: app/templates/index.html:5
+#, python-format
+msgid "Hi, %(username)s!"
+msgstr "你好啊, %(username)s!"
+
+#: app/templates/index.html:7
+msgid "Hello, gorgeous!"
+msgstr "哈喽,帅哥!"
+
+#: app/templates/login.html:12
+msgid "New User?"
+msgstr "没有注册?"
+
+#: app/templates/login.html:12
+msgid "Click to Register!"
+msgstr "点击注册!"
+
+#: app/templates/user.html:7
+msgid "User"
+msgstr "用户"
+
+#: app/templates/user.html:10
+msgid "Last seen on"
+msgstr "最后一次上线"
+
+#: app/templates/user.html:13
+msgid "Edit your profile"
+msgstr "编辑你的设置"
+
+#: app/templates/errors/404.html:4
+msgid "Not Found"
+msgstr "404:页面不存在."
+
+#: app/templates/errors/404.html:5 app/templates/errors/500.html:6
+msgid "Back"
+msgstr "返回"
+
+#: app/templates/errors/500.html:4
+msgid "An unexpected error has occurred"
+msgstr "遇到了意外的错误."
+
+#: app/templates/errors/500.html:5
+msgid "The administrator has been notified. Sorry for the inconvenience!"
+msgstr "已通知管理员, 对给您造成的不便, ExLoger 深感抱歉!"
+

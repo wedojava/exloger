@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if current_user.username %}
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    {% else %}
+    <h1>{{ _('Hello, gorgeous!') }}</h1>
+    {% endif %}
+    {% for post in posts %}
+    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+    {% endfor %}
+{% endblock %}
