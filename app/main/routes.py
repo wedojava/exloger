@@ -17,7 +17,8 @@ def before_request():
         db.session.commit()
 
     # g.locale = str(get_locale())
-    g.locale = "zh-CN" # It's bug for china,I have to set this way. Also, you can set it into base.html
+    # It's bug for china,I have to set this way. Also, you can set it into base.html
+    g.locale = 'zh_CN' if str(get_locale()).startswith('zh') else str(get_locale())
 
 
 @bp.route('/', methods=['GET', 'POST'])
