@@ -16,7 +16,8 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
-    g.locale = str(get_locale())
+    # g.locale = str(get_locale())
+    g.locale = "zh-CN" # It's bug for china,I have to set this way. Also, you can set it into base.html
 
 
 @bp.route('/', methods=['GET', 'POST'])
