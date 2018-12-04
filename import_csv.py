@@ -16,7 +16,7 @@ def csv2sqlite(csvPath, csvTableName):
 
     with open(csvPath, encoding='utf-8', errors = 'backslashreplace') as f:
         reader = pd.read_csv(f, error_bad_lines=False)
-        reader.to_sql(csvTableName, engine, if_exists='append', index_label='id')
+        reader.to_sql(csvTableName, engine, if_exists='replace', index_label='id')
 
     # with pd.read_csv(csvPath, encoding = "utf-8") as f:
     #     f.to_sql(csvTableName, engine, if_exists='append', index=False)
