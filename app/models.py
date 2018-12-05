@@ -13,6 +13,26 @@ def load_user(id):
     return User.query.get(int(id))
 
 
+class LogImported(db.Model):
+    id = db.Column(db.Integer, index=True, primary_key=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    sender_address = db.Column(db.String(255), index=True)
+    recipient_address = db.Column(db.String(255))
+    recipient_count = db.Column(db.Integer)
+    return_path = db.Column(db.String(255))
+    client_hostname = db.Column(db.String(255))
+    client_ip = db.Column(db.String(100))
+    server_hostname = db.Column(db.String(255))
+    server_ip = db.Column(db.String(100))
+    original_client_ip = db.Column(db.String(100))
+    original_server_ip = db.Column(db.String(100))
+    event_id = db.Column(db.String(50))
+    total_bytes = db.Column(db.Integer)
+    connector_id = db.Column(db.String(50))
+    message_subject = db.Column(db.String(255))
+    source = db.Column(db.String(50))
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)

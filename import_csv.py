@@ -30,4 +30,4 @@ def csv2sqlite(csvPath, csvTableName):
     #     f.to_sql(csvTableName, engine, if_exists='append', index=False)
 
 
-csv2sqlite('uploads/result_4_import_test.csv', 'second_half_2018_kazakh')
+csv2sqlite('uploads/result_4_import_test.csv', 'log_imported')
