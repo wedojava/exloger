@@ -1,0 +1,11 @@
+.bhl_m_top{
+    margin-top: 1em;
+}
+
+/* rewrite */
+.btn-outline-success{
+    color: #28a745 !important;
+}
+.btn-outline-success:hover{
+    color: #fff !important;
+}

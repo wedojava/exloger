@@ -3,9 +3,8 @@ from flask import render_template, flash, redirect, url_for, request, g, current
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from app import db
-from app.main.forms import EditProfileForm, PostForm
-from app.models import User
-# from app.translate import translate
+from app.main.forms import EditProfileForm, SearchForm
+from app.models import User, LogImported
 from app.main import bp
 
 
@@ -24,17 +23,13 @@ def before_request():
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title=_('Home'), posts=posts)
+    form = SearchForm()
+    if form.validate_on_submit():
+        flash('Search for {}'.format(form.email.data))
+        l = LogImported.query.filter_by(sender_address=form.email.data).all()
+        return render_template('index.html', title=_('Home'), form=form, loglist = l)
+
+    return render_template('index.html', title=_('Home'), form=form)
 
 
 

@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{# import 'bootstrap/wtf.html' as wtf #}
+{% from 'bootstrap/form.html' import render_form %}
 
 {% block app_content %}
     {% if current_user.username %}
@@ -6,7 +8,88 @@
     {% else %}
     <h1>{{ _('Hello, gorgeous!') }}</h1>
     {% endif %}
-    {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-4">
+            {# wtf.quick_form(form) #}
+            {{ render_form(form) }}
+        </div>
+    </div>
+
+
+    {% if loglist %}
+    <h1 class="bhl_m_top">You got the list:</h1>
+    <div class="bhl_m_top container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <!-- <th class="col">
+                        datetime
+                    </th> -->
+                    <th class="col">
+                        email
+                    </th>
+                    <th class="col">
+                        client_ip
+                    </th>
+                    <th class="col">
+                        original_client_ip
+                    </th>
+                    <th class="col">
+                        server_ip
+                    </th>
+                    <th class="col">
+                        original_server_ip
+                    </th>
+                    <th class="col">
+                        message_subject
+                    </th>
+                    <th class="col">
+                        total_bytes
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in loglist %}
+                <tr>
+                    <th scope="row">{{ log.id }}</th>
+                    <!-- <div class="col"> -->
+                    {# {{ moment(log.date).format('LLL') }} #}
+                    <!-- </div> -->
+
+                    <td class="col">
+                    {{ log.sender_address }}
+                    </td>
+                    
+                    <td class="col">
+                    {{ log.client_ip }}
+                    </td>
+                    
+                    <td class="col">
+                    {{ log.original_client_ip }}
+                    </td>
+
+                    <td class="col">
+                    {{ log.server_ip }}
+                    </td>
+
+                    <td class="col">
+                    {{ log.original_server_ip }}
+                    </td>
+
+                    <td class="col">
+                    {{ log.message_subject }}
+                    </td>
+
+                    <td class="col">
+                    {{ log.total_bytes }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    {% endif %}
 {% endblock %}

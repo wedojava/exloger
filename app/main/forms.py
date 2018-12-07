@@ -1,8 +1,15 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, validators
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
 from app.models import User
+
+
+class SearchForm(FlaskForm):
+    email = StringField(_l('Email'))
+    ip = StringField('IP', validators=[Length(min=0, max=140)])
+    submit = SubmitField(_l('Submit'))
+
 
 
 

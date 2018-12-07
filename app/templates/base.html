@@ -1,55 +1,67 @@
-{% extends 'bootstrap/base.html' %}
+{# % extends 'bootstrap/base.html' % #}
+{% from 'bootstrap/nav.html' import render_nav_item %}
+{% from 'bootstrap/utils.html' import render_static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {{ bootstrap.load_css() }}
+        {{ render_static('css', 'index.css') }}
+        <title>
+        {% if title %}{{ title }} - ExLoger{% else %}{{ _('Welcome to ExLoger') }}{% endif %}
+        </title>
+    </head>
 
-{% block title %}
-    {% if title %}{{ title }} - ExLoger{% else %}{{ _('Welcome to ExLoger') }}{% endif %}
-{% endblock %}
-
-{% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+    <body>
+        {% block navbar %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand btn btn-outline-success my-2 my-sm-0" href="{{ url_for('main.index') }}">ExLoger</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('main.index') }}">ExLoger</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a></li>
-                    {% else %}
-                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-{% endblock %}
 
-{% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
+                <div class="navbar-nav mr-auto">
+                    {{ render_nav_item('main.index', 'Home') }}
+                </div>
+                <div class="my-2 my-lg-0">
+                    {% if current_user.is_anonymous %}
+                    <a class="btn btn-light my-2 my-sm-0" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+                    {% else %}
+                    <a class="btn btn-light my-2 my-sm-0" href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a>
+                    <a class="btn btn-light my-2 my-sm-0" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+        
+        {% block content %}
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
             {% for message in messages %}
             <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
-        {% endif %}
-        {% endwith %}
-
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
-    </div>
-{% endblock %}
-
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {{ moment.lang(g.locale) }}
-{% endblock %}
+            {% endif %}
+            {% endwith %}
+            
+            {# application content needs to be provided in the app_content block #}
+            {% block app_content %}{% endblock %}
+        </div>
+        {% endblock %}
+        
+        {#
+        {% block scripts %}
+            {{ super() }}
+            {{ moment.include_moment() }}
+            {{ moment.lang(g.locale) }}
+            {% endblock %}
+        #}
+        
+        {{ bootstrap.load_js() }}
+        {{ moment.include_moment() }}
+        {{ moment.lang(g.locale) }}
+    </body>
+</html>
