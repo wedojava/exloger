@@ -1,13 +1,12 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g, current_app
+from flask import render_template, flash, redirect, url_for, request, g, current_app, session
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from app import db
 from app.main.forms import EditProfileForm, SearchForm
 from app.models import User, LogImported
 from app.main import bp
-
-
+from sqlalchemy import and_
 
 @bp.before_app_request
 def before_request():
@@ -24,14 +23,57 @@ def before_request():
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     form = SearchForm()
+    page = request.args.get('page', 1, type=int)
+    session['email'] = session['email'] if session['email'] else 'example@example.com'
+    session['ip'] = session['ip'] if session['ip'] else '127.0.0.1'
     if form.validate_on_submit():
         flash('Search for {}'.format(form.email.data))
-        l = LogImported.query.filter_by(sender_address=form.email.data).all()
-        return render_template('index.html', title=_('Home'), form=form, loglist = l)
+        words_email = ["%" + form.email.data + "%"]
+        rule_sender = and_(*[LogImported.sender_address.like(w) for w in words_email])
+        rule_recipient = and_(*[LogImported.recipient_address.like(w) for w in words_email])
+        rule_return = and_(*[LogImported.return_path.like(w) for w in words_email])
+        rule_email = rule_sender + rule_recipient + rule_return
+        words_ip = ["%" + form.ip.data + "%"]
+        rule_client_ip = and_(*[LogImported.client_ip.like(w) for w in words_ip])
+        rule_server_ip = and_(*[LogImported.server_ip.like(w) for w in words_ip])
+        rule_original_client_ip = and_(*[LogImported.original_client_ip.like(w) for w in words_ip])
+        rule_original_server_ip = and_(*[LogImported.original_server_ip.like(w) for w in words_ip])
+        rule_ip = rule_client_ip + rule_server_ip + rule_original_client_ip + rule_original_server_ip
+        rule = rule_email + rule_ip
+        l = LogImported.query.filter(rule)
+        # l = LogImported.query.filter(LogImported.sender_address.like("%" + form.email.data + "%")).all()
+        # l = LogImported.query.filter_by(sender_address=form.email.data).all()
+        
+        pagination = l.paginate(page, per_page=50, error_out=True)
+        pageitems = pagination.items
+        session['email'] = form.email.data
+        session['ip'] = form.ip.data
+        return render_template('index.html', title=_('Home'), form=form, loglist = l, \
+        pageitems = pageitems, pagination = pagination)
 
-    return render_template('index.html', title=_('Home'), form=form)
+    elif session['email'] is not 'example@example.com':
+        words_email = ["%" + session['email'] + "%"]
+        rule_sender = and_(*[LogImported.sender_address.like(w) for w in words_email])
+        rule_recipient = and_(*[LogImported.recipient_address.like(w) for w in words_email])
+        rule_return = and_(*[LogImported.return_path.like(w) for w in words_email])
+        rule_email = rule_sender + rule_recipient + rule_return
+        words_ip = ["%" + session['ip'] + "%"]
+        rule_client_ip = and_(*[LogImported.client_ip.like(w) for w in words_ip])
+        rule_server_ip = and_(*[LogImported.server_ip.like(w) for w in words_ip])
+        rule_original_client_ip = and_(*[LogImported.original_client_ip.like(w) for w in words_ip])
+        rule_original_server_ip = and_(*[LogImported.original_server_ip.like(w) for w in words_ip])
+        rule_ip = rule_client_ip + rule_server_ip + rule_original_client_ip + rule_original_server_ip
+        rule = rule_email + rule_ip
+        l = LogImported.query.filter(rule)
+        pagination = l.paginate(page, per_page=50, error_out=True)
+        pageitems = pagination.items
+        return render_template('index.html', title=_('Home'), form=form, loglist = l, \
+        pageitems = pageitems, pagination = pagination)
+    else:
+        return render_template('index.html', title=_('Home'), form=form)
+    
 
-
+ 
 
 @bp.route('/user/<username>')
 @login_required

@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {# import 'bootstrap/wtf.html' as wtf #}
 {% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
 
 {% block app_content %}
+<div class="container">
+{#
     {% if current_user.username %}
     <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     {% else %}
     <h1>{{ _('Hello, gorgeous!') }}</h1>
     {% endif %}
-
+#}
     <div class="row">
         <div class="col-md-4">
             {# wtf.quick_form(form) #}
@@ -18,8 +22,16 @@
 
 
     {% if loglist %}
-    <h1 class="bhl_m_top">You got the list:</h1>
-    <div class="bhl_m_top container">
+        {% if loglist.count() == 1 %}
+        <h1 class="bhl_m_top">You got only one line!</h1>
+        {% elif loglist.count() > 1 %}
+        <h1 class="bhl_m_top">You got the {{ loglist.count() }} lines!</h1>
+        {% else %}
+        <h1 class="bhl_m_top">You got nothing!</h1>
+        {% endif %}
+        {{ render_pagination(pagination) }}
+</div>
+    <div class="bhl_m_top">
         <table class="table">
             <thead>
                 <tr>
@@ -28,7 +40,7 @@
                         datetime
                     </th> -->
                     <th class="col">
-                        email
+                        sender_address
                     </th>
                     <th class="col">
                         client_ip
@@ -51,7 +63,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for log in loglist %}
+                {% for log in pageitems %}
                 <tr>
                     <th scope="row">{{ log.id }}</th>
                     <!-- <div class="col"> -->
