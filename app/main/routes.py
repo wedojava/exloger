@@ -13,6 +13,9 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+    
+    session['email'] = session['email'] if session['email'] else 'example@example.com'
+    session['ip'] = session['ip'] if session['ip'] else '127.0.0.1'
 
     # g.locale = str(get_locale())
     # It's bug for china,I have to set this way. Also, you can set it into base.html
@@ -24,8 +27,6 @@ def before_request():
 def index():
     form = SearchForm()
     page = request.args.get('page', 1, type=int)
-    session['email'] = session['email'] if session['email'] else 'example@example.com'
-    session['ip'] = session['ip'] if session['ip'] else '127.0.0.1'
     if form.validate_on_submit():
         flash('Search for {}'.format(form.email.data))
         words_email = ["%" + form.email.data + "%"]
@@ -43,7 +44,7 @@ def index():
         l = LogImported.query.filter(rule)
         # l = LogImported.query.filter(LogImported.sender_address.like("%" + form.email.data + "%")).all()
         # l = LogImported.query.filter_by(sender_address=form.email.data).all()
-        
+        flash(l.paginate(page, per_page=50, error_out=True))
         pagination = l.paginate(page, per_page=50, error_out=True)
         pageitems = pagination.items
         session['email'] = form.email.data
@@ -65,6 +66,7 @@ def index():
         rule_ip = rule_client_ip + rule_server_ip + rule_original_client_ip + rule_original_server_ip
         rule = rule_email + rule_ip
         l = LogImported.query.filter(rule)
+        flash(l.paginate(page, per_page=50, error_out=True))
         pagination = l.paginate(page, per_page=50, error_out=True)
         pageitems = pagination.items
         return render_template('index.html', title=_('Home'), form=form, loglist = l, \
